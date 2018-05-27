@@ -1,0 +1,17 @@
+.cache
+.idea
+.coverage
+.pytest_cache
+.DS_Store
+coverage.xml
+*.egg-info/
+*.egg
+__pycache__
+tests/__pycache__
+notes.txt
+
+
+build/
+docs/_build
+cover/
+dist/

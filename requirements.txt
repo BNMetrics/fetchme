@@ -1,0 +1,4 @@
+pytest
+logme
+virtualenv
+click
