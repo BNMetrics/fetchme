@@ -2,7 +2,7 @@ import pytest
 
 from click.testing import CliRunner
 
-from fetchme import cli
+from fetchme._cli import cli
 from logme.config import read_config
 
 
@@ -70,3 +70,17 @@ class TestCli:
 
         assert result.exit_code == -1
         assert e_info.value.args[0] == "'edit' is a default command, and it cannot be set!"
+
+    # ---------------------------------------------------------------------------
+    # 'fetchme remove' test
+    # ---------------------------------------------------------------------------
+    def test_remove(self, tmp_config):
+        self.runner.invoke(cli, ['set', 'to_remove="command to be removed"'])
+
+        config = read_config(tmp_config)
+        assert 'to_remove' in config.options('fetchme')
+
+        self.runner.invoke(cli, ['remove', 'to_remove'])
+
+        config_removed = read_config(tmp_config)
+        assert 'to_remove' not in config_removed.options('fetchme')

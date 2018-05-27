@@ -67,8 +67,18 @@ def set(ctx, content, override):
 @click.argument('name', required=1)
 @click.pass_context
 def remove(ctx, name):
-    pass
+    config_path = get_config_path()
+    config = read_config(config_path)
+
+    try:
+        config.get('fetchme', name)
+    except NoOptionError:
+        raise ValueError(f"{name} is not a valid config option. Avalables: {config.options('fetchme')}")
+
+    config.remove_option('fetchme', name)
+
+    with config_path.open('w') as file:
+        config.write(file)
 
 
 set_commands(cli)
-
