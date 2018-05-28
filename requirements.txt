@@ -1,6 +1,5 @@
 pytest
 logme
-virtualenv
 click
 pytest-cov
 codecov
