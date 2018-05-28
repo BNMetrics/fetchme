@@ -10,7 +10,7 @@ from .utils import get_config_path, set_commands
 from .__version__ import __version__
 
 
-DEFAULT_COMMANDS = ['edit', 'set']
+DEFAULT_COMMANDS = ['edit', 'set', 'remove']
 
 
 @click.version_option(__version__, '--version', '-v', '-V')
@@ -73,7 +73,7 @@ def remove(ctx, name):
     try:
         config.get('fetchme', name)
     except NoOptionError:
-        raise ValueError(f"{name} is not a valid config option. Avalables: {config.options('fetchme')}")
+        raise ValueError(f"'{name}' is not a valid config option. Avalables: {config.options('fetchme')}")
 
     config.remove_option('fetchme', name)
 

@@ -1,9 +1,9 @@
 import pytest
 
 from click.testing import CliRunner
+from logme.config import read_config
 
 from fetchme._cli import cli
-from logme.config import read_config
 
 
 class TestCli:
@@ -84,3 +84,11 @@ class TestCli:
 
         config_removed = read_config(tmp_config)
         assert 'to_remove' not in config_removed.options('fetchme')
+
+    def test_remove_raise(self, tmp_config):
+        with pytest.raises(ValueError) as e_info:
+            result = self.runner.invoke(cli, ['remove', 'blah'])
+
+            raise result.exception
+
+        assert e_info.value.args[0] == "'blah' is not a valid config option. Avalables: ['test_command']"
