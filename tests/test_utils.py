@@ -3,18 +3,19 @@ import mock
 import inspect
 
 from logme.config import read_config
-from fetchme.utils import get_config_path, get_command_func, set_commands
+from fetchme.utils import (_get_config_path, _get_command_func,
+                           _set_commands, doc_parametrize)
 
 
 def test_get_config_path(tmp_config):
-    config_path = get_config_path()
+    config_path = _get_config_path()
 
     assert str(config_path) == f"{tmp_config}"
 
 
 def test_get_command_func(tmp_config, mock_subprocess):
     config = read_config(tmp_config)
-    subcommand = get_command_func('test_command', config)
+    subcommand = _get_command_func('test_command', config)
 
     assert inspect.isfunction(subcommand)
 
@@ -22,11 +23,23 @@ def test_get_command_func(tmp_config, mock_subprocess):
 
     mock_subprocess.assert_called_with(['ls', '-al'])
 
+    assert subcommand.__doc__.strip() == "Execute command alias 'test_command'; command: ls -al"
+
 
 def test_set_commands(tmp_config):
     mock_group = mock.MagicMock()
 
-    set_commands(mock_group)
+    _set_commands(mock_group)
 
     mock_group.command.assert_called_with(name='test_command')
     mock_group.command.return_value.assert_called()
+
+
+def test_doc_parametrize():
+    @doc_parametrize(val1='hello', val2='world')
+    def dummy_func():
+        """
+        This is my docstring, {val1}, {val2}
+        """
+
+    assert dummy_func.__doc__.strip() == 'This is my docstring, hello, world'

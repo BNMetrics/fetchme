@@ -6,7 +6,7 @@ import subprocess
 from logme.config import read_config
 from configparser import NoOptionError
 
-from .utils import get_config_path, set_commands
+from .utils import _get_config_path, _set_commands
 from .__version__ import __version__
 
 
@@ -17,8 +17,37 @@ DEFAULT_COMMANDS = ['edit', 'set', 'remove']
 @click.group(context_settings={'help_option_names': ['-h', '--help']})
 def cli():
     """
-    Entry point
+    *Entry point*
 
+    Examples:
+
+        - To edit the config file in editor:
+
+            $ fetchme edit
+
+        - To set an alias to a command:
+
+            $ fetchme set ssh="ssh -i /path/to/my/key/file usrname@123.43.678.678"
+
+        - To execute the above set command:
+
+            $ fetchme ssh
+
+        - To remove the command
+
+            $ fetchme remove ssh
+
+    Help commands:
+
+        - Call 'help' commands(This also displays available commands):
+
+            $ fetchme -h
+
+            $ fetchme --help
+
+        - Check version:
+
+            $ fetchme -v
 
     """
 
@@ -26,7 +55,10 @@ def cli():
 @cli.command()
 @click.pass_context
 def edit(ctx):
-    config_path = get_config_path()
+    """
+    Command for editing '.fetchmerc' file in an editor, default editor: vim
+    """
+    config_path = _get_config_path()
     editor = os.environ.get('EDITOR', 'vim')
 
     if not config_path.exists() and not config_path.is_file():
@@ -41,12 +73,20 @@ def edit(ctx):
               help='override an existing',  is_flag=True)
 @click.pass_context
 def set(ctx, content, override):
+    """
+    Command for setting an alias to a long command
+
+    :param: content: key=value, e.g: ssh="ssh -i /path/to/my/key/file usrname@123.43.678.678"
+    :param: override: option for overriding existing key
+
+    :raises: ValueError, if the alias with provided name has already being set in .fetchmerc file
+    """
     name, val = content.split('=', 1)
 
     if name in DEFAULT_COMMANDS:
         raise ValueError(F"'{name}' is a default command, and it cannot be set!")
 
-    config_path = get_config_path()
+    config_path = _get_config_path()
     # TODO: possibly extract to a common 'config_utils' repo
     config = read_config(config_path)
 
@@ -67,7 +107,14 @@ def set(ctx, content, override):
 @click.argument('name', required=1)
 @click.pass_context
 def remove(ctx, name):
-    config_path = get_config_path()
+    """
+    Commands for removing a set alias
+
+    :param: name: The name of the alias, defined in .fetchmerc file
+
+    :raises: ValueError: if such alias does not exist
+    """
+    config_path = _get_config_path()
     config = read_config(config_path)
 
     try:
@@ -81,4 +128,4 @@ def remove(ctx, name):
         config.write(file)
 
 
-set_commands(cli)
+_set_commands(cli)
