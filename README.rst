@@ -52,8 +52,8 @@ Default Commands
 **fetchme** comes with 3 default commands: ``edit``, ``set`` and ``remove``.
 
 
-edit:
-~~~~~
+edit
+~~~~
 
 ``edit`` command opens up the ``.fetchmerc`` file in an editor. If you have configured your preferred editor in the environment variable ``EDITOR``,
 the preferred editor will be launched. The default editor is ``vim`` if the environment variable is not being configured.
@@ -73,8 +73,8 @@ the preferred editor will be launched. The default editor is ``vim`` if the envi
 
 
 
-set:
-~~~~
+set
+~~~
 
 This command is for setting an alias to a long command.
 
@@ -109,8 +109,8 @@ An additional line will be added to ``.fetchmerc`` file after the ``set`` comman
                         need to overriding an existing alias that has already been set.
 
 
-remove:
-~~~~~~~
+remove
+~~~~~~
 
 This command is to remove an existing alias.
 
@@ -153,3 +153,29 @@ Once you have ``set`` the alias to your command, you can execute your command by
 
 
 To see the original *unaliased* command, you can use the ``-h`` flag to bring up the descriptions.
+
+
+Global Options
+--------------
+
+These options applies to all the commands, including the aliases.
+
+
+Call 'help' commands
+~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+    $ fetchme -h
+
+    $ fetchme ssh -h
+
+Calling ``fetchme -h`` command also displays available commands, this includes the aliases you have defined.
+
+
+Check fetchme version
+~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+    $ fetchme -v

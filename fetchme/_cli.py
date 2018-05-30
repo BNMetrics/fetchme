@@ -37,7 +37,7 @@ def cli():
 
             $ fetchme remove ssh
 
-    Help commands:
+    Help options:
 
         - Call 'help' commands(This also displays available commands):
 
