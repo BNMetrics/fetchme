@@ -39,6 +39,9 @@ and this is where you put all your aliases.
 Usage & References
 ==================
 
+.. contents::
+
+
 Default Commands
 ----------------
 
