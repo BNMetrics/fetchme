@@ -2,6 +2,9 @@
 Fetchme - Safe Command Aliasing Tool
 ====================================
 
+.. image:: https://badge.fury.io/py/fetchme.svg
+    :target: https://badge.fury.io/py/fetchme
+
 .. image:: https://travis-ci.org/BNMetrics/fetchme.svg?branch=master
     :target: https://travis-ci.org/BNMetrics/fetchme
 
@@ -9,7 +12,7 @@ Fetchme - Safe Command Aliasing Tool
   :target: https://codecov.io/gh/BNMetrics/fetchme
 
 
-.. contents::
+.. contents:: **Table of Contents**
 
 
 What is fetchme?
