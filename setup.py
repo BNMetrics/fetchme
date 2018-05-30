@@ -15,7 +15,7 @@ home_dir = Path.home()
 
 requires = [
     'click',
-    'logme',
+    'logme',  # TODO: read_command() will be extracted to a common utils lib
 ]
 
 data_files = [
@@ -31,6 +31,8 @@ def post_install_cmd():
     """
     Post installation script for editing bash configuration file
     and allow command auto completion! :)
+
+    * auto completion will only work on unix based systems *
     """
     import sys
     import re

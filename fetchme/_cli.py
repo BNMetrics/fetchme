@@ -76,8 +76,9 @@ def set(ctx, content, override):
     """
     Command for setting an alias to a long command
 
-    :param: content: key=value, e.g: ssh="ssh -i /path/to/my/key/file usrname@123.43.678.678"
-    :param: override: option for overriding existing key
+    :argument: content: key=value, e.g: ssh="ssh -i /path/to/my/key/file usrname@123.43.678.678"
+
+    :option: --override, -o: option for overriding existing key
 
     :raises: ValueError, if the alias with provided name has already being set in .fetchmerc file
     """
