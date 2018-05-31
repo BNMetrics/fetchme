@@ -5,9 +5,8 @@ from functools import wraps
 # Imports for type hinting
 import click
 from typing import Callable
-from configparser import ConfigParser
 
-from logme.config import read_config
+from bnmutils import ConfigParser
 
 
 def _get_config_path() -> Path:
@@ -24,7 +23,7 @@ def _set_commands(click_group: click.core.Group):
     Set commands to click group based on the options in .fetchmerc file
     """
     config_path = _get_config_path()
-    config = read_config(config_path)
+    config = ConfigParser.from_files(config_path)
 
     option_names = config.options('fetchme')
 
@@ -76,5 +75,3 @@ def doc_parametrize(**parameters) -> Callable:
         return wrapper
 
     return decorator_
-
-

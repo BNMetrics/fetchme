@@ -1,7 +1,8 @@
 import pytest
 
 from click.testing import CliRunner
-from logme.config import read_config
+from bnmutils import ConfigParser
+from bnmutils.exceptions import InvalidConfigOption
 
 from fetchme._cli import cli
 
@@ -37,7 +38,7 @@ class TestCli:
     def test_set(self, tmp_config):
         result = self.runner.invoke(cli, ['set', 'blah=hello'])
 
-        config = read_config(tmp_config)
+        config = ConfigParser.from_files(tmp_config)
 
         assert result.exit_code == 0
         assert config.has_option('fetchme', 'blah')
@@ -47,7 +48,7 @@ class TestCli:
         self.runner.invoke(cli, ['set', 'blah=hello'])
         result = self.runner.invoke(cli, ["set", 'blah=overriden value', '-o'])
 
-        config = read_config(tmp_config)
+        config = ConfigParser.from_files(tmp_config)
 
         assert result.exit_code == 0
         assert config.get('fetchme', 'blah') == 'overriden value'
@@ -77,16 +78,16 @@ class TestCli:
     def test_remove(self, tmp_config):
         self.runner.invoke(cli, ['set', 'to_remove="command to be removed"'])
 
-        config = read_config(tmp_config)
+        config = ConfigParser.from_files(tmp_config)
         assert 'to_remove' in config.options('fetchme')
 
         self.runner.invoke(cli, ['remove', 'to_remove'])
 
-        config_removed = read_config(tmp_config)
+        config_removed = ConfigParser.from_files(tmp_config)
         assert 'to_remove' not in config_removed.options('fetchme')
 
     def test_remove_raise(self, tmp_config):
-        with pytest.raises(ValueError) as e_info:
+        with pytest.raises(InvalidConfigOption) as e_info:
             result = self.runner.invoke(cli, ['remove', 'blah'])
 
             raise result.exception

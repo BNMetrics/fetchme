@@ -15,7 +15,7 @@ home_dir = Path.home()
 
 requires = [
     'click',
-    'logme',  # TODO: read_command() will be extracted to a common utils lib
+    'bnmutils'
 ]
 
 data_files = [

@@ -2,7 +2,7 @@ import mock
 
 import inspect
 
-from logme.config import read_config
+from bnmutils import ConfigParser
 from fetchme.utils import (_get_config_path, _get_command_func,
                            _set_commands, doc_parametrize)
 
@@ -14,7 +14,7 @@ def test_get_config_path(tmp_config):
 
 
 def test_get_command_func(tmp_config, mock_subprocess):
-    config = read_config(tmp_config)
+    config = ConfigParser.from_files(tmp_config)
     subcommand = _get_command_func('test_command', config)
 
     assert inspect.isfunction(subcommand)

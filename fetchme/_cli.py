@@ -3,8 +3,9 @@ import click
 import os
 import subprocess
 
-from logme.config import read_config
 from configparser import NoOptionError
+from bnmutils import ConfigParser
+from bnmutils.exceptions import InvalidConfigOption
 
 from .utils import _get_config_path, _set_commands
 from .__version__ import __version__
@@ -88,8 +89,7 @@ def set(ctx, content, override):
         raise ValueError(F"'{name}' is a default command, and it cannot be set!")
 
     config_path = _get_config_path()
-    # TODO: possibly extract to a common 'config_utils' repo
-    config = read_config(config_path)
+    config = ConfigParser.from_files(config_path)
 
     try:
         config.get('fetchme', name)
@@ -116,12 +116,12 @@ def remove(ctx, name):
     :raises: ValueError: if such alias does not exist
     """
     config_path = _get_config_path()
-    config = read_config(config_path)
+    config = ConfigParser.from_files(config_path)
 
     try:
         config.get('fetchme', name)
     except NoOptionError:
-        raise ValueError(f"'{name}' is not a valid config option. Avalables: {config.options('fetchme')}")
+        raise InvalidConfigOption(f"'{name}' is not a valid config option. Avalables: {config.options('fetchme')}")
 
     config.remove_option('fetchme', name)
 

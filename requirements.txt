@@ -1,5 +1,5 @@
 pytest
-logme
+bnmutils
 click
 pytest-cov
 codecov
